@@ -1,4 +1,5 @@
-import { useState, useRef } from 'react'
+
+
 import './App.css'
 
 // Variable global para IDs únicos (como te daban en el examen)
@@ -11,80 +12,51 @@ const initialItems = [
   { id: 2, name: "Silla", checked: false },
 ];
 
-  export default function App(){
-    const [items, setItems] = useState(initialItems);
+export default function App(){
 
-    const handleItemCheck=(itemId)=>{
-      setItems(prev=>prev.map(item=>item.id===itemId?{...item,checked:!item.checked}: item));
-    }
-    const handleAdd=(newItem)=>{
-      setItems(prev=>[...prev, {id:nextId++, name:newItem, checked:false}])
-    }
 
-    const handleDelete=(itemId)=>{
-      setItems(prev=>prev.filter( el=>el.id!==itemId));
-    }
 
-    const counterChecked=items.filter(item=>item.checked)
-
+  
   return (
     <div className="container mx-auto px-4 py-4">
-      <h1 className="mb-8 fw-bold">Challenge 2</h1>
-      <SearchInput  onAdd={handleAdd}/>
-      <ul className="mt-5 divide-y divide-gray-200 border border-gray-200 rounded-lg overflow-hidden max-w-sm">
-        <Items items={items} onItemCheck={handleItemCheck} onDelete={handleDelete}  />
-      </ul>
-      <p className="mt-5">{counterChecked.length} de {items.length} Items</p>
+      <h1 className="mb-8 text-bold">Challenge 2</h1>
+      <ListItems  />
+
+      <FormItem  />
+
+      <div className="mt-5"> {3} of {5}</div>
+
     </div>
   )
 }
 
-const SearchInput=({onAdd})=>{
+const ListItems=()=>{
 
-  const [text,setText]=useState('');
-  const inputText=useRef(null);
 
-  const handleOnSubmit=(e)=>{
-    e.preventDefault();
-    if(text!==''){
-      onAdd(text)
-      setText('');
-    }
 
-    inputText.current.focus()
-  }
   return(
-    <div>
-      <form onSubmit={handleOnSubmit}>
-        <input
-          type="text"
-          className="border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-purple-400"
-          value={text}
-          onChange={(e)=>setText(e.target.value)}
-          ref={inputText}
-        />
-        <button className="ml-2 bg-purple-600 hover:bg-purple-700 text-white text-sm font-medium px-4 py-2 rounded transition-colors">
-          Add
-        </button>
+    <ul>
+  
+            <li  className="mb-3">
+            items
+            </li>  
+    </ul>
+  )
+}
+
+const FormItem=()=>{
+
+  return(
+      <form>
+          <input type="text"  className="border border rounded-md px-4 py-2 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+           
+           />
+           <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+            Add
+          </button>
       </form>
-    </div>
-    );
+
+    )
 }
 
-const Items=({items, onItemCheck, onDelete})=>{
 
-  return (
-      <div>
-      {items.map(item=>(
-        <li key={item.id} className="flex items-center gap-3 px-4 py-3 bg-white hover:bg-gray-50 transition-colors">
-          <input type="checkbox" className="mr-3 w-4 h-4 accent-purple-600 cursor-pointer" checked={item.checked} onChange={()=>onItemCheck(item.id)} />
-          <span className={item.checked ? 'line-through' : 'text-gray-700'}>{item.name}</span>
-          <button className="btn btn-secondary ml-2 bg-red-600 hover:bg-red-700 text-white text-sm font-medium px-4 py-2 rounded transition-colors"
-            onClick={()=>onDelete(item.id)}> Delete </button>
-        </li>
-        ))}
-      </div>
-
-    );
-
-}
